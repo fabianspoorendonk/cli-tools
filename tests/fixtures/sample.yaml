@@ -1,0 +1,7 @@
+service:
+  name: demo
+  enabled: true
+  port: 8080
+  tags:
+    - api
+    - internal

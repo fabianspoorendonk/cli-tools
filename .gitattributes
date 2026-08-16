@@ -1,0 +1,11 @@
+# Shell scripts must keep LF endings: Git Bash cannot execute a script with CRLF.
+# The bin rules rely on the last matching pattern winning.
+*.sh text eol=lf
+bin/* text eol=lf
+bin/*.cmd text eol=crlf
+
+*.cmd text eol=crlf
+
+*.md text
+*.yaml text
+*.yml text

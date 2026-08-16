@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Command configuration
+command_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
+# Container configuration
+container_image="docker.io/koalaman/shellcheck-alpine@sha256:5921d946dac740cbeec2fb1c898747b6105e585130cc7f0602eec9a10f7ddb63" # 0.10.0
+
+# Container run options
+container_run_options=()
+
+# Container command arguments
+container_command_args=(shellcheck "$@")
+
+# Run container
+# shellcheck source=lib/container.sh
+source "$command_dir/../lib/container.sh"
+container_run "${container_run_options[@]}" "$container_image" "${container_command_args[@]}"

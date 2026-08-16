@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Command configuration
+command_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
+# Container configuration
+container_image="docker.io/rhysd/actionlint@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667" # 1.7.12
+
+# Container run options
+container_run_options=()
+
+# Container command arguments
+container_command_args=("$@")
+
+# Run container
+# shellcheck source=lib/container.sh
+source "$command_dir/../lib/container.sh"
+container_run "${container_run_options[@]}" "$container_image" "${container_command_args[@]}"

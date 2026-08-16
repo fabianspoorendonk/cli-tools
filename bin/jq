@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Command configuration
+command_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
+# Container configuration
+container_image="ghcr.io/jqlang/jq@sha256:4f34c6d23f4b1372ac789752cc955dc67c2ae177eb1b5860b75cdc5091ce6f91" # 1.8.1
+
+# Container run options
+container_run_options=()
+container_run_options+=(--interactive) # jq filters standard input whenever it is not given a file to read.
+
+# Container command arguments
+container_command_args=("$@")
+
+# Run container
+# shellcheck source=lib/container.sh
+source "$command_dir/../lib/container.sh"
+container_run "${container_run_options[@]}" "$container_image" "${container_command_args[@]}"

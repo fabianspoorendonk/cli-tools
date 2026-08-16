@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# Command configuration
+command_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+container_config_file="$command_dir/../config/markdownlint-cli2.yaml"
+
+# Container configuration
+container_image="docker.io/davidanson/markdownlint-cli2@sha256:842f9e9b3db4ab11215a856e69e773eaa19cbf3bb2f51242aa8945ef80439445"
+
+# Parse command arguments
+for arg in "$@"; do
+  case "$arg" in
+    # The working tree stays read-only unless fixes were explicitly requested.
+    --fix) container_run_options_has_writable=1 ;;
+    # A lone dash is markdownlint-cli2's glob for standard input, not a flag.
+    -) container_command_args_has_glob=1; container_run_options_has_interactive=1 ;;
+    --help|-h) container_command_args_has_help=1 ;;
+    -*) ;;
+    *) container_command_args_has_glob=1 ;;
+  esac
+done
+
+# Container run options
+container_run_options=()
+if [ "${container_run_options_has_writable:-0}" -eq 1 ]; then
+  container_run_options+=(--writable)
+fi
+if [ "${container_run_options_has_interactive:-0}" -eq 1 ]; then
+  container_run_options+=(--interactive)
+fi
+container_run_options+=(--mount "$container_config_file" "/config/.markdownlint-cli2.yaml:ro")
+
+# Container command arguments
+if [ "${container_command_args_has_help:-0}" -eq 1 ]; then
+  container_command_args=("$@")
+else
+  container_command_args=(--config /config/.markdownlint-cli2.yaml "$@")
+  container_command_args_has_glob="${container_command_args_has_glob:-0}"
+  if [ "$container_command_args_has_glob" -eq 0 ]; then
+    container_command_args+=("**/*.md")
+  fi
+fi
+
+# Run container
+# shellcheck source=lib/container.sh
+source "$command_dir/../lib/container.sh"
+container_run "${container_run_options[@]}" "$container_image" "${container_command_args[@]}"
