@@ -26,7 +26,6 @@ podman run --rm --pull=missing ^
     --read-only ^
     --cap-drop all ^
     --security-opt no-new-privileges ^
-    --pids-limit 128 ^
     --tmpfs /tmp:rw,noexec,nosuid,nodev,size=64m ^
     !INTERACTIVE_OPTION! ^
     --volume "%CONTAINER_HOST_WORKSPACE%:/workspace:%CONTAINER_RUN_OPTIONS_MOUNT_MODE%" ^
