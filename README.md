@@ -11,6 +11,7 @@ Beyond reducing this risk, the container-based approach simplifies installing an
 | Command | Tool | Description |
 | --- | --- | --- |
 | `actionlint` | [actionlint](https://github.com/rhysd/actionlint) | GitHub Actions linting |
+| `hadolint` | [Hadolint](https://github.com/hadolint/hadolint) | Dockerfile linting |
 | `jq` | [jq](https://github.com/jqlang/jq) | JSON processing and transformation |
 | `markdownlint` | [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) | Markdown linting |
 | `shellcheck` | [ShellCheck](https://github.com/koalaman/shellcheck) | Shell script static analysis |
@@ -33,6 +34,9 @@ Each launcher script mounts the current working directory into the container at 
 ```shell
 actionlint                       # lint all workflows
 actionlint --shellcheck=         # skip the shellcheck integration
+
+hadolint Dockerfile              # lint a Dockerfile
+cat Dockerfile | hadolint -      # lint standard input
 
 markdownlint                     # lint **/*.md
 markdownlint "docs/**/*.md"      # lint a specific glob
@@ -77,7 +81,7 @@ The following controls further limit the tools' access and impact:
 | Path | Purpose |
 | --- | --- |
 | `bin/*.cmd` | Windows entry points; invoke the tool through Git Bash or Podman. |
-| `bin/actionlint`, `bin/jq`, `bin/markdownlint`, `bin/shellcheck`, `bin/yq` | Per-tool configuration: image, mounts, arguments. |
+| `bin/actionlint`, `bin/hadolint`, `bin/jq`, `bin/markdownlint`, `bin/shellcheck`, `bin/yq` | Per-tool configuration: image, mounts, arguments. |
 | `lib/container.cmd` | Shared Windows Podman execution, recovery, and cleanup. |
 | `lib/container.sh` | Shared container invocation and Podman checks. |
 | `config/` | Tool configuration files. |

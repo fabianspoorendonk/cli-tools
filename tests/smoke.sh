@@ -17,6 +17,15 @@ echo "Checking yq..."
 echo "Checking actionlint..."
 ./bin/actionlint -version | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'
 
+echo "Checking hadolint..."
+./bin/hadolint --version | grep -Eq '^Haskell Dockerfile Linter [0-9]+\.[0-9]+\.[0-9]+$'
+./bin/hadolint tests/fixtures/Dockerfile
+if hadolint_output="$(printf 'FROM alpine:latest\n' | ./bin/hadolint - 2>&1)"; then
+	echo "Expected Hadolint to reject an unpinned Dockerfile." >&2
+	exit 1
+fi
+printf '%s\n' "$hadolint_output" | grep -q 'DL3007'
+
 echo "Checking shellcheck..."
 ./bin/shellcheck --version | grep -Eq '^version: [0-9]+\.[0-9]+\.[0-9]+$'
 

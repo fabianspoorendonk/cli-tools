@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Command configuration
+command_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
+# Container configuration
+container_image="docker.io/hadolint/hadolint@sha256:30a8fd2e785ab6176eed53f74769e04f125afb2f74a6c52aef7d463583b6d45e" # 2.12.0
+
+# Container run options
+container_run_options=(--interactive)
+
+# Container command arguments
+container_command_args=(/bin/hadolint "$@")
+
+# Run container
+# shellcheck source=lib/container.sh
+source "$command_dir/../lib/container.sh"
+container_run "${container_run_options[@]}" "$container_image" "${container_command_args[@]}"
