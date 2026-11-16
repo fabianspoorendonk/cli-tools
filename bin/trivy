@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Command configuration
+command_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
+# Container configuration
+container_image="docker.io/aquasec/trivy@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb" # 0.76.2
+
+# Container command arguments
+container_command_args=("$@")
+
+# Run container
+# shellcheck source=lib/container.sh
+source "$command_dir/../lib/container.sh"
+container_run "$container_image" "${container_command_args[@]}"
