@@ -47,7 +47,7 @@ cat README.md | markdownlint -   # lint standard input
 shellcheck bin/* lib/*.sh        # lint shell scripts
 
 trivy --version                  # print the Trivy version
-trivy fs .                       # scan the workspace filesystem
+trivy config .                   # scan configuration files for misconfigurations
 
 cat data.json | jq '.items[0]'   # filter standard input
 jq '.name' package.json          # read a file from the repository
