@@ -15,6 +15,7 @@ Beyond reducing this risk, the container-based approach simplifies installing an
 | `jq` | [jq](https://github.com/jqlang/jq) | JSON processing and transformation |
 | `markdownlint` | [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) | Markdown linting |
 | `shellcheck` | [ShellCheck](https://github.com/koalaman/shellcheck) | Shell script static analysis |
+| `trivy` | [Trivy](https://github.com/aquasecurity/trivy) | Vulnerability and configuration scanning |
 | `yq` | [yq](https://github.com/mikefarah/yq) | YAML, JSON, and XML processing |
 
 ## Requirements
@@ -44,6 +45,9 @@ markdownlint --fix               # apply fixable rules
 cat README.md | markdownlint -   # lint standard input
 
 shellcheck bin/* lib/*.sh        # lint shell scripts
+
+trivy --version                  # print the Trivy version
+trivy config .                   # scan configuration files for misconfigurations
 
 cat data.json | jq '.items[0]'   # filter standard input
 jq '.name' package.json          # read a file from the repository
@@ -81,7 +85,7 @@ The following controls further limit the tools' access and impact:
 | Path | Purpose |
 | --- | --- |
 | `bin/*.cmd` | Windows entry points; invoke the tool through Git Bash or Podman. |
-| `bin/actionlint`, `bin/hadolint`, `bin/jq`, `bin/markdownlint`, `bin/shellcheck`, `bin/yq` | Per-tool configuration: image, mounts, arguments. |
+| `bin/actionlint`, `bin/hadolint`, `bin/jq`, `bin/markdownlint`, `bin/shellcheck`, `bin/trivy`, `bin/yq` | Per-tool configuration: image, mounts, arguments. |
 | `lib/container.cmd` | Shared Windows Podman execution, recovery, and cleanup. |
 | `lib/container.sh` | Shared container invocation and Podman checks. |
 | `config/` | Tool configuration files. |

@@ -26,6 +26,10 @@ if hadolint_output="$(printf 'FROM alpine:latest\n' | ./bin/hadolint - 2>&1)"; t
 fi
 printf '%s\n' "$hadolint_output" | grep -q 'DL3007'
 
+echo "Checking trivy..."
+./bin/trivy --version | grep -Eq '^Version: [0-9]+\.[0-9]+\.[0-9]+$'
+./bin/trivy config tests/fixtures >/dev/null
+
 echo "Checking shellcheck..."
 ./bin/shellcheck --version | grep -Eq '^version: [0-9]+\.[0-9]+\.[0-9]+$'
 
